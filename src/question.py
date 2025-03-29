@@ -48,16 +48,11 @@ class Stats(BaseModel):
 
 import os
 
-fn_stats = 'data/stats.json'
+fn_old_stats = 'data/stats.json'
 
-def load_stats() -> Stats:
-    if os.path.exists(fn_stats):
-        with open(fn_stats, 'r', encoding='utf-8') as ic:
+def load_old_stats() -> Stats | None:
+    if os.path.exists(fn_old_stats):
+        with open(fn_old_stats, 'r', encoding='utf-8') as ic:
             return Stats.model_validate_json(ic.read())
     else:
-        return Stats(stats= {})
-
-def save_stats(stats : Stats) -> None:
-    with open(fn_stats + ".tmp", 'w', encoding='utf-8') as oc:
-        oc.write(stats.model_dump_json())
-    os.rename(fn_stats + ".tmp", fn_stats)
+        return None

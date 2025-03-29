@@ -4,12 +4,43 @@ from audiofix import Audio
 
 import question as q
 import random
+import os
+from pydantic import ValidationError
+
+stats_key = "eitango.stats"
 
 def main(page: ft.Page) -> None:
     all_wqs = q.load_questions()
     wqs : list[q.WordQuestion] = []
     queue : list[q.WordQuestion] = []
-    stats = q.load_stats()
+    
+    stats : q.Stats
+
+    def save_stats(stats : q.Stats) -> None:
+        page.client_storage.set(stats_key, stats.model_dump())
+
+    def load_old_stats() -> q.Stats:
+        stats_ = q.load_old_stats()
+        stats = q.Stats(stats= {}) if stats_ is None else stats_
+        print('loaded old one')
+        save_stats(stats)
+        return stats
+
+    def load_stats() -> q.Stats:
+        if page.client_storage.contains_key(stats_key):
+            # Need type check
+            stats_dict = page.client_storage.get(stats_key)
+            try:
+                stats = q.Stats.model_validate(stats_dict)
+                print('ok!')
+                return stats
+            except ValidationError:
+                return load_old_stats()
+        else:
+            return load_old_stats()
+
+    stats = load_stats()
+
     rng = random.Random()
     selected_wq : q.WordQuestion
 
@@ -187,7 +218,7 @@ def main(page: ft.Page) -> None:
     def load_next() -> None:
         nonlocal queue
         if queue == []:
-            q.save_stats(stats)
+            save_stats(stats)
             requeue()
         wq = queue[0]
         queue = queue[1:]
