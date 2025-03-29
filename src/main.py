@@ -10,7 +10,10 @@ from pydantic import ValidationError
 stats_key = "eitango.stats"
 
 def main(page: ft.Page) -> None:
-    all_wqs = q.load_questions()
+    path_data = os.getenv("FLET_APP_STORAGE_DATA")
+    assert path_data is not None
+
+    all_wqs = q.load_questions(os.path.join(path_data, 'questions400fix.json'))
     wqs : list[q.WordQuestion] = []
     queue : list[q.WordQuestion] = []
     

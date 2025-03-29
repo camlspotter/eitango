@@ -22,9 +22,9 @@ class WordQuestion(BaseModel):
     word : Word = Field(description='単語情報')
     question : Question = Field(description='問題')
 
-def load_questions() -> list[WordQuestion]:
+def load_questions(path : str) -> list[WordQuestion]:
     wqs = []
-    with open('data/questions400fix.json', 'r', encoding='utf-8') as ic:
+    with open(path, 'r', encoding='utf-8') as ic:
         for l in ic.readlines():
             wqs.append(WordQuestion.model_validate_json(l))
     return wqs
