@@ -1,9 +1,18 @@
 from typing import Any, cast
 import flet as ft
-import flet_audio as ft_audio
+import flet_audio
 
 import question as q
 import random
+
+class Audio(flet_audio.Audio):
+    def __init__(self, src : str):
+        super().__init__(src)
+
+    def play(self) -> None:
+        # Dynamic web on Chrome requires this release() before play()      
+        super().release() # type: ignore
+        super().play() # type: ignore
 
 def main(page: ft.Page) -> None:
     all_wqs = q.load_questions()
@@ -35,9 +44,9 @@ def main(page: ft.Page) -> None:
             print('retry:', failures)
         rng.shuffle(queue)
 
-    audio1 = ft_audio.Audio(src="audio/「さあ、いくぞ！」.mp3", autoplay=True)
-    audio_correct = ft_audio.Audio(src="audio/クイズ正解2.mp3")
-    audio_wrong = ft_audio.Audio(src="audio/クイズ不正解1.mp3")
+    audio1 = Audio(src="audio/「さあ、いくぞ！」.mp3")
+    audio_correct = Audio(src="audio/クイズ正解2.mp3")
+    audio_wrong = Audio(src="audio/クイズ不正解1.mp3")
     page.overlay.append(audio1)
     page.overlay.append(audio_correct)
     page.overlay.append(audio_wrong)
@@ -116,6 +125,7 @@ def main(page: ft.Page) -> None:
             wqs = [wq for wq in all_wqs if wq.word.no % 8 == mod]
         new_wq = rng.choice(wqs)
         load_next()
+        audio1.play()
         page.update()
 
     import functools

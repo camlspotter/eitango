@@ -10,6 +10,7 @@ authors = [
 dependencies = [
   "flet-audio>=0.1.0",
   "flet==0.27.6",
+  "mypy>=1.15.0",
 ]
 
 [tool.flet]
