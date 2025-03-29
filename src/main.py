@@ -1,18 +1,9 @@
 from typing import Any, cast
 import flet as ft
-import flet_audio
+from audiofix import Audio
 
 import question as q
 import random
-
-class Audio(flet_audio.Audio):
-    def __init__(self, src : str):
-        super().__init__(src)
-
-    def play(self) -> None:
-        # Dynamic web on Chrome requires this release() before play()      
-        super().release() # type: ignore
-        super().play() # type: ignore
 
 def main(page: ft.Page) -> None:
     all_wqs = q.load_questions()
