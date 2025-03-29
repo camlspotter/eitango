@@ -109,7 +109,7 @@ def main(page: ft.Page) -> None:
             answer,
         ],
         alignment= ft.MainAxisAlignment.SPACE_EVENLY,
-        expand= True,
+        # expand= True,
         visible= False,
     )
 
@@ -123,7 +123,6 @@ def main(page: ft.Page) -> None:
             wqs = all_wqs
         else:
             wqs = [wq for wq in all_wqs if wq.word.no % 8 == mod]
-        new_wq = rng.choice(wqs)
         load_next()
         audio1.play()
         page.update()
@@ -160,7 +159,7 @@ def main(page: ft.Page) -> None:
             ))
         ],
         # alignment= ft.MainAxisAlignment.SPACE_EVENLY,
-        expand= True,
+        # expand= True,
     )
 
     page.add(
@@ -175,7 +174,7 @@ def main(page: ft.Page) -> None:
                     playarea,
                 ],
             ),
-            expand=True,
+            # expand=True,
         )
     )
 
