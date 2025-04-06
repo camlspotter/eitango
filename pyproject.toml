@@ -10,7 +10,7 @@ authors = [
 dependencies = [
   "flet-audio>=0.1.0",
   "flet==0.27.6",
-  "mypy>=1.15.0",
+  "pydantic>=2.11.0",
 ]
 
 [tool.flet]
@@ -34,6 +34,7 @@ path = "src"
 [tool.uv]
 dev-dependencies = [
     "flet[all]==0.27.6",
+    "mypy>=1.15.0",
 ]
 
 [tool.poetry]
