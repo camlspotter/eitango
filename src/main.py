@@ -10,10 +10,16 @@ from pydantic import ValidationError
 stats_key = "eitango.stats"
 
 def main(page: ft.Page) -> None:
-    path_data = os.getenv("FLET_APP_STORAGE_DATA")
-    assert path_data is not None
+    # import re
+    # s = '\n'.join([f'{k} = {v}' for (k, v) in os.environ.items() if re.match(r'FLET_', k)])
+    # tf = ft.TextField(s, multiline=True, expand=True)
+    # tf.value += tf.value + '\n' + os.getcwd()
+    # page.add(tf)
 
-    all_wqs = q.load_questions(os.path.join(path_data, 'questions400fix.json'))
+    # flet run defines FLET_ASSETS_DIR
+    # MacOS app does not define FLET_ASSETS_DIR
+    dir_assets = os.environ.get('FLET_ASSETS_DIR', 'assets')
+    all_wqs = q.load_questions(os.path.join(dir_assets, 'questions400fix.json'))
     wqs : list[q.WordQuestion] = []
     queue : list[q.WordQuestion] = []
     
